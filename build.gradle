@@ -1,0 +1,72 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: springBootVersion
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.21.0"
+        classpath "name.remal:gradle-plugins:1.0.156"
+    }
+}
+
+plugins {
+    id "name.remal.sonarlint" version "1.0.156"
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'application'
+apply plugin: 'war'
+apply plugin: 'idea'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: "name.remal.sonarlint"
+
+sourceSets.main.java.srcDirs = ['src/main/java']
+mainClassName = "com.brevitaz.HostelManagementApp"
+
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+applicationDefaultJvmArgs = [
+        "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+]
+jar {
+    baseName = 'hostel-management'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile ('org.springframework.boot:spring-boot-starter-web'){
+        exclude module: 'org.springframework.boot:spring-boot-starter-logging'
+    }
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: swaggerVersion
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '4.0.1.Final'
+    compile group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
+   compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '4.1.8.Final'
+
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
+}
+
+configurations {
+    compile.exclude(group: 'ch.qos.logback')
+}
+
+springBoot {
+    executable = true
+}
+
+println 'Started Application'

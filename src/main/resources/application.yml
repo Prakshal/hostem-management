@@ -1,0 +1,22 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: Hostel Management
+
+endpoints:
+  health:
+    sensitive: false
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, threaddump, loggers, metrics, mappings, configprops, beans, heapdump, prometheus
+  security:
+    enabled: false
